@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Cookies from "js-cookie";
 import { useAtom } from "jotai";
 import { loggedAtom } from "../../services/Atoms/user";
+import APIManager from "../../services/api";
 
 function Navigation(props) {
   const [logged, setLogged] = useAtom(loggedAtom);
@@ -11,8 +11,9 @@ function Navigation(props) {
     textDecoration: "underline",
   };
 
-  const logout = () => {
-    Cookies.remove("token");
+  const logout = async (e) => {
+    e.preventDefault();
+    await APIManager.logoutUser();
     setLogged(false);
   };
 

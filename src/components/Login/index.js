@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Cookies from "js-cookie";
 import { useSetAtom } from "jotai";
 import { loggedAtom } from "../../services/Atoms/user";
+import { currentUserAtom } from '../../services/Atoms/currentUser';
 
 
 import APIManager from '../../services/api';
@@ -11,14 +11,15 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const logged = useSetAtom(loggedAtom);
+    const userID = useSetAtom(currentUserAtom);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const response = await APIManager.loginUser(email, password);
-        Cookies.set("token", response.jwt);
         logged(true);
+        userID(JSON.stringify(response.user));
         
     };
 
